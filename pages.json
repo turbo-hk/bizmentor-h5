@@ -1,0 +1,90 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/news/list",
+			"style": {
+				"navigationBarTitleText": "创业好帮手",
+				"enablePullDownRefresh": true
+			}
+		}, {
+			"path": "pages/news/search/search",
+			"style": {
+				"navigationBarTitleText": "搜索"
+			}
+		}, {
+			"path": "pages/news/detail",
+			"style": {
+				"navigationBarTitleText": "文章详情"
+			}
+		},
+		{
+			"path": "pages/news/publish",
+			"style": {
+				"navigationBarTitleText": "发布"
+			}
+		},
+		{
+			"path": "pages/home/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/home/user/user-info",
+			"style": {
+				"navigationBarTitleText": "我的资料"
+			}
+		},
+		{
+			"path": "pages/home/user/login-page/index/index",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/home/user/login-page/pwd-login/pwd-login",
+			"style": {
+				"navigationBarTitleText": "用户名密码登录"
+			}
+		},
+		{
+			"path": "pages/home/user/login-page/register/register",
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#7a7e83",
+		"selectedColor": "#0faeff",
+		"backgroundColor": "#ffffff",
+		"list": [{
+			"pagePath": "pages/news/list",
+			"text": "首页",
+			"iconPath": "static/img/home.png",
+			"selectedIconPath": "static/img/homeHL.png"
+		}, {
+			"pagePath": "pages/news/publish",
+			"text": "发布",
+			"iconPath": "static/img/fabu.png",
+			"selectedIconPath": "static/img/fabuHL.png"
+		}, {
+			"pagePath": "pages/home/index",
+			"text": "我的",
+			"iconPath": "static/img/me.png",
+			"selectedIconPath": "static/img/meHL.png"
+		}]
+	}
+}
