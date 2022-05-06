@@ -38,20 +38,39 @@
 							</uni-row>
 							<uni-row :gutter="gutter" :width="nvueWidth" v-if="data.income">
 								<uni-col :span="10" :offset="1"><text>月收入预期：</text></uni-col>
-								<uni-col :span="12"><text>{{data.income.min}} ～ {{data.income.max}} 元</text></uni-col>
+								<uni-col :span="12"><text>{{data.income.min}} ～ {{data.income.max}} 元</text>
+								</uni-col>
 							</uni-row>
 							<uni-row :gutter="gutter" :width="nvueWidth" v-if="data.payBack">
 								<uni-col :span="10" :offset="1"><text>投资回报周期：</text></uni-col>
 								<uni-col :span="12"><text>{{data.payBack.min}} ～ {{data.payBack.max}} 个月</text>
 								</uni-col>
 							</uni-row>
-							<uni-row :gutter="gutter" :width="nvueWidth" v-if="data.operationMode">
+							<uni-row :gutter="gutter" :width="nvueWidth"
+								v-if="data.operationMode && data.operationMode.label">
 								<uni-col :span="10" :offset="1"><text>运作模式：</text></uni-col>
 								<uni-col :span="12"><text>{{data.operationMode.label}}</text></uni-col>
 							</uni-row>
-							<uni-row :gutter="gutter" :width="nvueWidth" v-if="data.skilled">
+							<uni-row :gutter="gutter" :width="nvueWidth" v-if="data.skilled && data.skilled.label">
 								<uni-col :span="10" :offset="1"><text>行业经验和技能要求：</text></uni-col>
 								<uni-col :span="12"><text>{{data.skilled.label}}</text></uni-col>
+							</uni-row>
+							<uni-row :gutter="gutter" :width="nvueWidth" v-if="data.caseType && data.caseType.label">
+								<uni-col :span="10" :offset="1"><text>案例类型：</text></uni-col>
+								<uni-col :span="12"><text>{{data.caseType.label}}</text></uni-col>
+							</uni-row>
+							<uni-row :gutter="gutter" :width="nvueWidth" v-if="data.caseYear">
+								<uni-col :span="10" :offset="1"><text>案例发生时间：</text></uni-col>
+								<uni-col :span="12"><text>{{data.caseYear}} 年</text></uni-col>
+							</uni-row>
+							<uni-row :gutter="gutter" :width="nvueWidth"
+								v-if="data.courseType && data.courseType.label">
+								<uni-col :span="10" :offset="1"><text>干货类型：</text></uni-col>
+								<uni-col :span="12"><text>{{data.courseType.label}}</text></uni-col>
+							</uni-row>
+							<uni-row :gutter="gutter" :width="nvueWidth" v-if="data.technical && data.technical.label">
+								<uni-col :span="10" :offset="1"><text>技能储备要求：</text></uni-col>
+								<uni-col :span="12"><text>{{data.technical.label}}</text></uni-col>
 							</uni-row>
 						</view>
 					</template>
@@ -74,8 +93,9 @@
 					<template v-slot:body>
 						<view class="content-body">
 							<rich-text type="text" :nodes="nodes_content"></rich-text>
-							<view class="pay-message" v-if="showPay">
-								<view class="pay-message-text text-center" @click="pay"><text>¥{{data.readIncome}}元，阅读全文
+							<view class="pay-message" v-if="showPay === true">
+								<view class="pay-message-text text-center" @click="pay">
+									<text>¥{{data.readIncome}}元，阅读全文
 										》</text>
 								</view>
 								<view class="pay-message-text text-center"><text>加入会员，免费阅读</text></view>
@@ -91,11 +111,17 @@
 				</uni-list-item>
 			</uni-list>
 		</template>
-		<view class="post-footer">
-			<view class="footer_content">
-				<text>转发</text>
+
+		<!-- 底部 -->
+		<view class="footer">
+			<view @click.stop="footerClick('喜欢')">
+				<uni-icons type="pengyouquan" size="18" color="#999"></uni-icons>
+				<text class="footer-box__item">喜欢</text>
 			</view>
+			<view @click.stop="footerClick('评论')"><text class="footer-box__item">评论</text></view>
+			<view @click.stop="footerClick('分享')"><text class="footer-box__item">分享</text></view>
 		</view>
+
 	</view>
 </template>
 
@@ -112,7 +138,7 @@
 				nvueWidth: 730,
 				nodes_abstract_content: '',
 				nodes_content: '',
-				showPay: 1,
+				showPay: false,
 			}
 
 		},
@@ -126,6 +152,7 @@
 					title: event.title
 				})
 			}
+
 		},
 		onReady() {
 			if (this.id) { // ID 不为空，则发起查询
@@ -145,7 +172,7 @@
 						that.data = res.data;
 						that.nodes_content = that.formatRichText(that.data.content);
 						that.nodes_abstract_content = that.formatRichText(that.data.abstractContent);
-						if (that.makePublic == 0) {
+						if (that.makePublic === 0) {
 							that.showPay = true;
 						}
 					},
@@ -154,6 +181,9 @@
 					})
 			},
 			formatRichText(content) {
+				if (!content || content.length == 0) {
+					return content;
+				}
 				content = content.replace(/&quot;/g, '"');
 				content = content.replace(/&amp;/g, '&');
 				content = content.replace(/&lt;/g, '<');
@@ -169,13 +199,41 @@
 					Utils.toLogin();
 					return;
 				}
-
+			},
+			footerClick(types) {
+				uni.showToast({
+					title: types,
+					icon: 'none'
+				});
 			}
 		}
 	}
 </script>
 
 <style>
+	.article {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		height: 100%;
+	}
+
+	.footer {
+		width: 100%;
+		position: fixed;
+		bottom: 0;
+		display: flex;
+		justify-content: space-around;
+		flex-direction: row;
+		background-color: rgb(241, 241, 241);
+		line-height: 45rpx;
+	}
+
+	.footer-box__item {
+		font-size: 16px;
+		color: #666;
+	}
+
 	.article-title {
 		padding: 20px 15px;
 		padding-bottom: 0;
@@ -199,16 +257,10 @@
 		color: #3b4144;
 	}
 
-	.title-content {
-		font-size: 10px;
-		color: #330000;
-	}
-
 	/* 描述 额外文本 */
-	.uni-note {
+	.title-content {
 		color: #999;
 		font-size: 12px;
-
 		/* #ifndef APP-NVUE */
 		display: flex;
 		/* #endif */
@@ -232,6 +284,7 @@
 
 	.content-body {
 		overflow: auto;
+		margin-bottom: 100rpx;
 	}
 
 	.text-center {
@@ -240,10 +293,10 @@
 
 	.pay-message-text {
 		color: #f8b35a;
+		line-height: 55rpx;
 	}
 
 	.pay-message-button-area {
-		background-color: #0f1f38;
 		padding-top: 15rpx;
 		padding-bottom: 15rpx;
 	}
@@ -276,13 +329,16 @@
 	rich-text .p_class {
 		width: 100%;
 		font-size: 18px;
-		text-align: center;
 		line-height: 36px;
+	}
+
+	rich-text .ql-align-center {
+		text-align: center;
+		line-height: 48px;
 	}
 
 	rich-text .img_class {
 		width: 100%;
 		height: auto;
-
 	}
 </style>

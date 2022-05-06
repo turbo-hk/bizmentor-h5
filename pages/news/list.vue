@@ -34,10 +34,8 @@
 </template>
 
 <script>
-	import config from "../../config/index.js";
-	var API = config.API;
-	var API_HEADER = config.API_HEADER;
-	
+	import Utils from "/config/utils.js";
+
 	export default {
 		computed: {
 			inputPlaceholder(e) {
@@ -92,22 +90,15 @@
 			},
 			loadData(pageNo) {
 				this.searchParam.pageNo = pageNo;
-				uni.request({
-					url: API+'/content/page',
-					method: 'POST',
-					header: API_HEADER,
-					data: this.searchParam,
-					success: res => {
-						this.totalLength = res.data.total;
-						if (res.data.list.length > 0) {
-							this.dataList = this.dataList.concat(res.data.list);
-							this.currentPage = this.currentPage + 1;
-						}
-						console.log(this.dataList);
-					},
-					fail: () => {},
-					complete: () => {}
-				});
+				const queryData = this.searchParam;
+				const that = this;
+				Utils.postData('/content/page', queryData, function(res) {
+					that.totalLength = res.total;
+					if (res.list && res.list.length > 0) {
+						that.dataList = that.dataList.concat(res.list);
+						that.currentPage = that.currentPage + 1;
+					}
+				}, function() {});
 			},
 			toDetail(item) {
 				uni.navigateTo({

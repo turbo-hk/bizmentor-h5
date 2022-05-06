@@ -36,28 +36,32 @@
 	export default {
 		data() {
 			return {
-				userInfo: {},
 				gridList: [{
-						"text": "测试1",
-						"icon": "chat"
-					},
-					{
-						"text": "2",
-						"icon": "cloud-upload"
-					},
-				],
+					"text": "收益",
+					"icon": "chat"
+				}, ],
 				ucenterList: [
 					[{
-						"title": '退出登录',
-						"to": '',
-						"event": 'logout',
-						"icon": "paperplane"
+						"title": '收益明细',
+						"to": '/pages/home/settings/settings',
+						"icon": "gear"
 					}],
 					[{
-						"title": '关于',
-						"to": '/',
-						"icon": "info"
-					}]
+						"title": '设置',
+						"to": '',
+						'event': 'toSettings',
+						"icon": "gear"
+					}],
+					[{
+						"title": '版本  v1.0.0',
+						"to": '',
+						"icon": "gear"
+					}],
+					// [{
+					// 	"title": '关于',
+					// 	"to": '/',
+					// 	"icon": "info"
+					// }]
 				],
 				listStyles: {
 					"height": "150rpx", // 边框高度
@@ -68,46 +72,39 @@
 						"style": "solid", // 边框样式
 						"radius": "100%" // 边框圆角，支持百分比
 					}
-				}
+				},
+				hasLogin: false,
+				userInfo: {},
+				
 			}
 		},
-		computed: {
-			hasLogin() {
-				return Utils.hasLogin();
-			},
+		computed: {},
+		watch: {
 		},
 		onTabItemTap(e) {
-			this.loadUserInfo();
+
 		},
-		onLoad() {
-			this.loadUserInfo();
+		onShow() {
+			this.hasLogin = Utils.hasLogin();
+			this.userInfo =  Utils.userInfo();
 		},
+		onLoad() {},
 		methods: {
 			toUserInfo() {
-				Utils.NAVIGATE_TO_AUTHED_URL("/pages/home/user/user-info");
+				Utils.navigateToUrl("/pages/home/user/user-info");
 			},
 			/**
 			 * 个人中心项目列表点击事件
 			 */
 			ucenterListClick(item) {
-				if (!item.to && item.event) {
+				if (item.to) {
+					Utils.NAVIGATE_TO_AUTHED_URL(item.to);
+				} else if (!item.to && item.event) {
 					this[item.event]();
 				}
 			},
-			logout() {
-				Utils.logout();
-				Utils.toIndex();
-			},
-			loadUserInfo() {
-				console.log(1234)
-				const that = this;
-				if (Utils.hasLogin() && !Utils.loginUser()) {
-					Utils.getData('/member/user/get', {}, function(res) {
-						console.log(res)
-						that.userInfo = res.data;
-						uni.setStorageSync("loginUser", res.data);
-					}, function() {})
-				}
+			toSettings() {
+				Utils.navigateToUrl('/pages/home/settings/settings');
 			}
 		}
 	}

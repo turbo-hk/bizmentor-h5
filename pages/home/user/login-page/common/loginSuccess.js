@@ -7,6 +7,7 @@ export default function(result) {
 	uni.clearStorageSync();
 	console.log('登录成功', result);
 	uni.setStorageSync("authorization", result.token)
+	Utils.userInfo();
 	var delta = 0 //判断需要返回几层
 	let pages = getCurrentPages();
 	// console.log(pages);
