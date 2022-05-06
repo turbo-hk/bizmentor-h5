@@ -226,7 +226,7 @@
 		justify-content: space-around;
 		flex-direction: row;
 		background-color: rgb(241, 241, 241);
-		line-height: 45rpx;
+		line-height: 45rpx; 
 	}
 
 	.footer-box__item {
