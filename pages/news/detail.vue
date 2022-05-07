@@ -93,7 +93,7 @@
 					<template v-slot:body>
 						<view class="content-body">
 							<rich-text type="text" :nodes="nodes_content"></rich-text>
-							<view class="pay-message" v-if="showPay === true">
+							<view class="pay-message" v-if="data.makePublic === 0">
 								<view class="pay-message-text text-center" @click="pay">
 									<text>¥{{data.readIncome}}元，阅读全文
 										》</text>
@@ -114,12 +114,24 @@
 
 		<!-- 底部 -->
 		<view class="footer">
-			<view @click.stop="footerClick('喜欢')">
-				<uni-icons type="pengyouquan" size="18" color="#999"></uni-icons>
-				<text class="footer-box__item">喜欢</text>
+			<view @click.stop="footerClick('转发')">
+				<text class="footer-box__item">
+					<uni-icons custom-prefix="iconfont" type="icon-31zhuanfa" size="20"></uni-icons>
+					转发
+				</text>
 			</view>
-			<view @click.stop="footerClick('评论')"><text class="footer-box__item">评论</text></view>
-			<view @click.stop="footerClick('分享')"><text class="footer-box__item">分享</text></view>
+			<view @click.stop="footerClick('暂未开通')">
+				<text class="footer-box__item">
+					<uni-icons custom-prefix="iconfont" type="icon-31pinglun" size="20"></uni-icons>
+					评论
+				</text>
+			</view>
+			<view @click.stop="footerClick('点赞')">
+				<text class="footer-box__item">
+					<uni-icons custom-prefix="iconfont" type="icon-dianzan" size="20"></uni-icons>
+					点赞
+				</text>
+			</view>
 		</view>
 
 	</view>
@@ -138,7 +150,6 @@
 				nvueWidth: 730,
 				nodes_abstract_content: '',
 				nodes_content: '',
-				showPay: false,
 			}
 
 		},
@@ -172,9 +183,6 @@
 						that.data = res.data;
 						that.nodes_content = that.formatRichText(that.data.content);
 						that.nodes_abstract_content = that.formatRichText(that.data.abstractContent);
-						if (that.makePublic === 0) {
-							that.showPay = true;
-						}
 					},
 					function() {
 
@@ -226,7 +234,7 @@
 		justify-content: space-around;
 		flex-direction: row;
 		background-color: rgb(241, 241, 241);
-		line-height: 45rpx; 
+		line-height: 100rpx;
 	}
 
 	.footer-box__item {

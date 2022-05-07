@@ -52,11 +52,15 @@
 				searchParam: {
 					pageSize: 6,
 					pageNo: 1,
-					keyword: undefined
+					keyword: undefined,
+					channel: undefined
 				}
 			}
 		},
-		onLoad() {
+		onLoad(event) {
+			if (event.channel) {
+				this.searchParam.channel = event.channel;
+			}
 			this.loadData(1);
 		},
 		onReachBottom() {
