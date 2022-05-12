@@ -30,15 +30,16 @@
 					register: "注册账号",
 				},
 				login: {
-					username: "13800138001",
-					password: "123456",
+					username: undefined,
+					password: undefined,
 				},
+				isWeixin: false,
 
 			}
 		},
 		computed: {
 			canLogin() {
-				return this.login && this.login.username.length && this.isPwd;
+				return this.login && this.login.username && this.login.username.length && this.isPwd;
 			},
 			isPwd() {
 				return this.login && /^.{6,20}$/.test(this.login.password);
@@ -47,9 +48,7 @@
 				return this.login && /^1\d{10}$/.test(this.login.phone);
 			}
 		},
-		onLoad() {
-
-		},
+		onLoad() {},
 		methods: {
 			pwdLogin() {
 				const that = this;
@@ -73,7 +72,7 @@
 			},
 			toRegister() {
 				Utils.navigateToUrl('/pages/home/user/login-page/register/register')
-			}
+			},
 
 		}
 	}
