@@ -53,7 +53,7 @@
 						"icon": "gear"
 					}],
 					[{
-						"title": '版本  v1.0.0',
+						"title": '关于',
 						"to": '',
 						"icon": "gear"
 					}],
@@ -85,8 +85,20 @@
 
 		},
 		onShow() {
+			console.log(11)
+			const that = this;
 			this.hasLogin = Utils.hasLogin();
-			this.userInfo =  Utils.userInfo();
+			Utils.getData('/member/user/get', {}, function(res) {
+				console.log(res.data)
+				if(res.code == 401){
+					uni.clearStorageSync();
+					Utils.toLogin() ;
+				}else{
+					uni.setStorageSync("loginUser", res.data);
+					that.userInfo = res.data;
+				}
+				
+			}, function() {})
 		},
 		onLoad() {},
 		methods: {

@@ -6,7 +6,8 @@ export default function(result) {
 	});
 	uni.clearStorageSync();
 	console.log('登录成功', result);
-	uni.setStorageSync("authorization", result.token)
+	uni.setStorageSync("userId", result.userId);
+	uni.setStorageSync("authorization", result.accessToken)
 	Utils.userInfo();
 	var delta = 0 //判断需要返回几层
 	let pages = getCurrentPages();

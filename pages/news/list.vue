@@ -2,9 +2,8 @@
 	<view class="content">
 		<!-- 搜索功能 -->
 		<view class="uni-search-box">
-			<uni-search-bar v-model="searchParam.keyword" ref="searchBar" radius="100" cancelButton="none" disabled
-				:placeholder="inputPlaceholder" />
-			<view class="cover-search-bar" @click="searchClick"></view>
+			<uni-search-bar v-model="searchParam.keyword" class="uni-mt-10" radius="100" placeholder="关键字搜索"
+				clearButton="auto" cancelButton="none" @confirm="search" @clear = "searchClear" />
 		</view>
 		<!-- 列表展示 -->
 		<uni-list class="uni-list" :border="false" :style="{height:listHight}">
@@ -85,12 +84,20 @@
 			}, 2000)
 		},
 		methods: {
-			searchClick(e) { //点击搜索框
-				uni.hideKeyboard();
-				uni.navigateTo({
-					url: "search/search",
-					animationType: 'fade-in'
-				});
+			search() { //点击搜索框
+				console.log(this.searchParam)
+				this.resetForm();
+				this.loadData(1);
+			},//搜索清除
+			searchClear(){
+				this.resetForm();
+				this.loadData(1);
+			},
+			resetForm(){
+				this.searchParam.pageNo = 1;
+				this.currentPage = 1;
+				this.totalLength = 0;
+				this.dataList = [];
 			},
 			loadData(pageNo) {
 				this.searchParam.pageNo = pageNo;

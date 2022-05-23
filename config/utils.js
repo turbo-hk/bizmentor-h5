@@ -1,6 +1,5 @@
 import config from "./index.js";
 
-
 const Utils = {
 	NAVIGATE_TO_AUTHED_URL(navigate_url) {
 		let authorization = uni.getStorageSync("authorization");
@@ -28,20 +27,36 @@ const Utils = {
 	toLogin() {
 		//this.navigateToUrl("/pages/home/user/login-page/pwd-login/pwd-login")
 		//this.navigateToUrl("/pages/home/user/login-page/wx-mp-login/wx-mp-login")
-		//请求微信接口，用来获取code
-		let local = encodeURIComponent(window.location.href); //获取当前页面地址作为回调地址
-		Utils.getData('/member/auth/social-auth-redirect', {
+
+		let local = encodeURIComponent(
+			"http://www.bizmentor.cn/pages/home/user/login-page/wx-mp-login/wx-mp-login"); //获取当前页面地址作为回调地址
+		console.log(local)
+		this.getData('/member/auth/social-auth-redirect', {
 			"redirectUri": local,
 			"type": 31,
 			"tenant-id": 123
 		}, function(res) {
 			console.log(res)
 			if (res.code == 0) {
-				window.location.href = res.data;
+				window.location.href = decodeURIComponent(res.data);
 			}
-		}, function() {
+		}, function() {})
 
-		})
+		//请求微信接口，用来获取code
+		// let local = encodeURIComponent(window.location.href); //获取当前页面地址作为回调地址
+		// console.log(local)
+		// Utils.getData('/member/auth/social-auth-redirect', {
+		// 	"redirectUri": local,
+		// 	"type": 31,
+		// 	"tenant-id": 123
+		// }, function(res) {
+		// 	console.log(res)
+		// 	if (res.code == 0) {
+		// 		window.location.href = decodeURIComponent(res.data);
+		// 	}
+		// }, function() {
+
+		// })
 	},
 	apiHeaders(type) {
 		const authorization = uni.getStorageSync("authorization");
@@ -136,6 +151,18 @@ const Utils = {
 		data.curRoute = curRoute
 		data.curParam = curParam
 		return data;
+	},
+	getUrlParam(name) {
+		var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+		let url = window.location.href.split('#')[0]
+		let search = url.split('?')[1]
+		if (search) {
+			var r = search.substr(0).match(reg)
+			if (r !== null)
+				return unescape(r[2])
+			return null;
+		} else
+			return null;
 	}
 }
 

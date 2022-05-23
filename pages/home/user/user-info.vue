@@ -14,11 +14,11 @@
 			return {}
 		},
 		onLoad() {
-		   const hasLogin = Utils.hasLogin();
-		   console.log(hasLogin)
-		   if(!hasLogin){
-			 Utils.toLogin();  
-		   }
+			const hasLogin = Utils.hasLogin();
+			console.log(hasLogin)
+			if (!hasLogin) {
+				Utils.toLogin();
+			}
 		},
 		methods: {
 

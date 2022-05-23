@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3381488 */
-  src: url('iconfont.ttf?t=1651845126082') format('truetype');
+  src: url('iconfont.ttf?t=1653058342207') format('truetype');
 }
 
 .iconfont {
@@ -11,15 +11,19 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-wechatEnshrine:before {
+  content: "\e602";
+}
+
+.icon-pinglun:before {
+  content: "\e603";
+}
+
+.icon-zhuanfa:before {
+  content: "\e6e8";
+}
+
 .icon-dianzan:before {
   content: "\ec7f";
-}
-
-.icon-31pinglun:before {
-  content: "\e601";
-}
-
-.icon-31zhuanfa:before {
-  content: "\e600";
 }
 

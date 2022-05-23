@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<!-- 顶部文字 -->
-		<text class="title">用户名密码登录</text>
+		<text class="title"></text>
 		<input class="input-box" :inputBorder="false" v-model="login.username"
 			:placeholder="pwdLoginForm.placeholder" />
 		<input type="password" class="input-box" :inputBorder="false" v-model="login.password"
@@ -13,6 +13,10 @@
 			<text class="link" @click="toRetrievePwd">{{pwdLoginForm.forgetPassword}}</text>
 			<text class="link" @click="toRegister">{{pwdLoginForm.register}}</text>
 		</view>
+		<view class="bottom-side-otherLogin" @click="getWeChatCode" v-if="isWeixin">
+				<!-- <text>其他社交账号登录</text> -->
+				<image src="https://xuezhifu-resource.oss-cn-hangzhou.aliyuncs.com/newxuefu/mwx/wx.png"></image>
+			</view>
 	</view>
 </template>
 
@@ -33,7 +37,7 @@
 					username: undefined,
 					password: undefined,
 				},
-				isWeixin: false,
+				isWeixin: true,
 
 			}
 		},
@@ -73,6 +77,9 @@
 			toRegister() {
 				Utils.navigateToUrl('/pages/home/user/login-page/register/register')
 			},
+			getWeChatCode(){
+				
+			}
 
 		}
 	}
@@ -128,5 +135,14 @@
 
 	.auth-box .link {
 		font-size: 26rpx;
+	}
+	.bottom-side-otherLogin{
+		position: fixed;
+		bottom: 30rpx;
+	}
+	.bottom-side-otherLogin image{
+		width: 80rpx;
+		height: 80rpx;
+		text-align: center;
 	}
 </style>
