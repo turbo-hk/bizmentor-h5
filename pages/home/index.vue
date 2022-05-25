@@ -9,8 +9,8 @@
 				<text class="user-name" v-else>未登录</text>
 			</view>
 		</view>
-		<uni-grid class="grid" :column="4" :showBorder="false" :square="true">
-			<uni-grid-item class="item" v-for="(item,index) in gridList" @click.native="tapGrid(index)" :key="index">
+		<uni-grid class="grid" :column="4" :showBorder="false" :square="true" @click="tapGrid">
+			<uni-grid-item class="item" v-for="(item,index) in gridList"  :index="index" :key="index">
 				<uni-icons class="icon" color="#007AFF" :type="item.icon" size="26"></uni-icons>
 				<text class="text">{{ item.text }}</text>
 			</uni-grid-item>
@@ -42,6 +42,11 @@
 				}, ],
 				ucenterList: [
 					[{
+						"title": '我的创作',
+						"to": '/pages/home/settings/settings',
+						"icon": "gear"
+					},
+					{
 						"title": '收益明细',
 						"to": '/pages/home/settings/settings',
 						"icon": "gear"
@@ -57,11 +62,6 @@
 						"to": '',
 						"icon": "gear"
 					}],
-					// [{
-					// 	"title": '关于',
-					// 	"to": '/',
-					// 	"icon": "info"
-					// }]
 				],
 				listStyles: {
 					"height": "150rpx", // 边框高度
@@ -117,6 +117,18 @@
 			},
 			toSettings() {
 				Utils.navigateToUrl('/pages/home/settings/settings');
+			},
+			tapGrid(e){
+				let {
+					index
+				} = e.detail
+				console.log(index)
+				this.loadAccount()
+			},
+			loadAccount(){
+				Utils.getData('/user/member/account/balance', {}, function(res) {
+					console.log(res.data)
+				}, function() {})
 			}
 		}
 	}

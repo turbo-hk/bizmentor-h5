@@ -34,19 +34,19 @@
 								<uni-col :span="12"><text>{{data.region}}</text></uni-col>
 							</uni-row>
 							<uni-row :gutter="gutter" :width="nvueWidth"
-								v-if="data.startAmount && data.startAmount.isEmpty == false">
+								v-if="data.startAmount && data.startAmount.empty === false">
 								<uni-col :span="10" :offset="1"><text>启动资金：</text></uni-col>
-								<uni-col :span="12"><text>{{data.startAmount.min}}～{{data.startAmount.max}} 元</text>
+								<uni-col :span="12"><text>{{data.startAmount.min}} ～ {{data.startAmount.max}} 元</text>
 								</uni-col>
 							</uni-row>
 							<uni-row :gutter="gutter" :width="nvueWidth"
-								v-if="data.income && data.income.isEmpty == false">
+								v-if="data.income && data.income.empty === false">
 								<uni-col :span="10" :offset="1"><text>月收入预期：</text></uni-col>
 								<uni-col :span="12"><text>{{data.income.min}} ～ {{data.income.max}} 元</text>
 								</uni-col>
 							</uni-row>
 							<uni-row :gutter="gutter" :width="nvueWidth"
-								v-if="data.payBackm && data.payBackm.isEmpty == false">
+								v-if="data.payBack && data.payBack.empty === false">
 								<uni-col :span="10" :offset="1"><text>投资回报周期：</text></uni-col>
 								<uni-col :span="12"><text>{{data.payBack.min}} ～ {{data.payBack.max}} 个月</text>
 								</uni-col>
@@ -99,7 +99,7 @@
 						<view class="content-body">
 							<view>
 								<rich-text type="text" :nodes="nodes_content"></rich-text>
-								<view class="hide-preCode-box" v-if="data.makePublic === 0"  @click="pay">
+								<view class="hide-preCode-box" v-if="data.makePublic === 0" @click="pay">
 									<view class="pay-message-text">
 										<text> “成功创业需要投资”</text>
 									</view>
@@ -128,25 +128,26 @@
 
 		<!-- 底部 -->
 		<view class="footer">
-			<view @click.stop="footerClick('1')">
+			<view @tap="zf">
 				<text class="footer-box__item">
 					<uni-icons custom-prefix="iconfont" type="icon-zhuanfa" size="20"></uni-icons>
 					转发
 				</text>
 			</view>
-			<view @click.stop="footerClick('收藏')">
+			<view @click.stop="sc">
 				<text class="footer-box__item">
-					<uni-icons custom-prefix="iconfont" type="icon-wechatEnshrine" size="20"></uni-icons>
+					<uni-icons custom-prefix="iconfont" type="icon-wechatEnshrine" :color="btnColor.sc" size="20">
+					</uni-icons>
 					收藏
 				</text>
 			</view>
-			<view @click.stop="footerClick('点赞')">
+			<view @click.stop="dz">
 				<text class="footer-box__item">
-					<uni-icons custom-prefix="iconfont" type="icon-dianzan" size="20"></uni-icons>
+					<uni-icons custom-prefix="iconfont" type="icon-dianzan" :color="btnColor.dz" size="20"></uni-icons>
 					点赞
 				</text>
 			</view>
-			<view @click.stop="footerClick('暂未开通')">
+			<view @click.stop="footerClick('3')">
 				<text class="footer-box__item">
 					<uni-icons custom-prefix="iconfont" type="icon-pinglun" size="20"></uni-icons>
 					评论
@@ -160,18 +161,24 @@
 <script>
 	import Utils from "/config/utils.js";
 	import Config from "/config/index.js";
+	import {msg} from "/common/js/util.js";
 
 	export default {
 		data() {
 			return {
 				id: undefined,
-				title: 'title',
+				title: '',
 				data: {},
 				gutter: 0,
 				nvueWidth: 730,
 				nodes_abstract_content: '',
 				nodes_content: '',
-				currentPay: '0'
+				currentPay: '0',
+				sharedUserId: undefined,
+				btnColor: {
+					sc: undefined,
+					dz: undefined
+				}
 			}
 
 		},
@@ -185,7 +192,12 @@
 					title: event.title
 				})
 			}
+			if (event.shared) {
+				this.sharedUserId = event.shared;
+			}
 			this.loadOne();
+			this.read();
+
 		},
 		methods: {
 			loadOne() {
@@ -196,6 +208,12 @@
 						that.title = res.data.title;
 						that.nodes_content = that.formatRichText(that.data.content);
 						that.nodes_abstract_content = that.formatRichText(that.data.abstractContent);
+						if(that.data.sc > 0){
+							that.btnColor.sc = 'green';
+						}
+						if(that.data.dz > 0){
+							that.btnColor.dz = 'green';
+						}
 						that.initWx();
 					},
 					function() {
@@ -225,7 +243,8 @@
 				let pageUrl = location.href;
 				Utils.postData("/content/pay/create", {
 					id: that.id,
-					"channelId": 18
+					"channelId": 18,
+					"sharedMemberUserId": that.sharedUserId,
 				}, function(res) {
 					console.log(res)
 					if (res.code === 0) {
@@ -265,17 +284,8 @@
 
 			},
 			footerClick(types) {
-				if(types === "1"){
-					console.log()
-					this.wxAppShareCore();
-					return;
-				}
-				uni.showToast({
-					title: types,
-					icon: 'none'
-				});
 			},
-			initWx(){
+			initWx() {
 				const that = this;
 				let pageUrl = location.href;
 				Utils.postForm("/member/wx-mp/create-jsapi-signature", {
@@ -283,7 +293,7 @@
 				}, function(res) {
 					that.init(res.data);
 				}, function() {
-				
+
 				})
 			},
 			init(e) {
@@ -295,7 +305,9 @@
 					timestamp: e.timestamp, // 必填，生成签名的时间戳
 					nonceStr: e.nonceStr, // 必填，生成签名的随机串
 					signature: e.signature, // 必填，签名
-					jsApiList: ["chooseWXPay", "updateAppMessageShareData", "updateTimelineShareData"] // 必填，需要使用的JS接口列表
+					jsApiList: ["chooseWXPay", "updateAppMessageShareData",
+						"updateTimelineShareData"
+					] // 必填，需要使用的JS接口列表
 				});
 				jWeixin.ready(function() {
 					// config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
@@ -318,9 +330,12 @@
 				});
 			},
 			wxAppShareCore() {
+				let userId = Utils.getUserId();
+				let userIdParam = userId ? "&shared=" + userId : "";
+				let url = window.location.href + userIdParam;
 				const params = {
 					"title": this.data.title,
-					"desc": this.data.abstractContent.replace(/<[^<>]+>/g,""),
+					"desc": this.data.abstractContent.replace(/<[^<>]+>/g, ""),
 					"link": window.location.href,
 					"img": this.data.thumbnailImage
 				}
@@ -353,7 +368,60 @@
 					}
 				});
 
-			}
+			},
+			read() {
+				Utils.postData("/content/read", {
+					contentId: this.id,
+					count: 1
+				}, function(res) {
+					console.log("阅读", res)
+				}, function() {
+
+				})
+			},
+			dz() {
+				if (this.data.dz && this.data.dz > 0) {
+					return;
+				}
+				const that = this;
+				Utils.postData("/content/dz", {
+					contentId: this.id,
+					count: 1
+				}, function(res) {
+					console.log("点赞", res)
+					if(res.code == 0){
+						that.btnColor.dz = 'green';
+						that.data.dz = res.data.count;
+					}
+				}, function() {
+				})
+			},
+			sc() {
+				if (this.data.sc && this.data.sc > 0) {
+					return;
+				}
+				const that = this;
+				Utils.postData("/content/sc", {
+					contentId: this.id,
+					count: 1
+				}, function(res) {
+					console.log("收藏", res);
+					if(res.code == 0){
+						that.btnColor.sc = 'green';
+						that.data.sc = res.data.count;
+					}
+				}, function() {
+
+				})
+			},
+			zf(){
+				uni.showModal({
+					title: "转阅赚钱规则",
+					content: "点击右上角的 “...” 分享文章, 你将获得收益。收益比例为：文章付费金额的50%；\n\n 先行付费阅读文章，将获得更多流量。\n\n (转阅赚钱规则平台可根据实际情况适时调整)",
+					showCancel: false,
+					confirmText: "确定"
+				})
+			},
 		}
 	}
 </script>

@@ -28,6 +28,9 @@ const Utils = {
 		//this.navigateToUrl("/pages/home/user/login-page/pwd-login/pwd-login")
 		//this.navigateToUrl("/pages/home/user/login-page/wx-mp-login/wx-mp-login")
 
+		if (this.isWeiXinLogin() === false) {
+			return;
+		}
 		let local = encodeURIComponent(
 			"http://www.bizmentor.cn/pages/home/user/login-page/wx-mp-login/wx-mp-login"); //获取当前页面地址作为回调地址
 		console.log(local)
@@ -163,6 +166,9 @@ const Utils = {
 			return null;
 		} else
 			return null;
+	},
+	getUserId(){
+		return uni.getStorageSync("userId"); 
 	}
 }
 
