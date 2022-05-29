@@ -1,0 +1,35 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/news/list"
+		},
+		{
+			"path": "pages/news/push"
+		},
+		{
+			"path": "pages/news/detail"
+		},
+		{
+			"path": "pages/home/index"
+		},
+		{
+			"path": "pages/home/login/wx-mp-login/wx-mp-login"
+		},
+		{
+			"path": "pages/home/login/pwd-login/pwd-login"
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationStyle": "custom",
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "创业好帮手",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	}
+}
