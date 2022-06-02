@@ -4,6 +4,7 @@ import {
 } from "@/config/constants.js";
 
 export const local = {
+	"domain": "http://test/bizmentor.cn",
 	"baseUrl": 'http://192.168.31.33:48080/app-api',
 	"tenantId": '123',
 	"wxAppId": 'wx9ff5dd29f461c008',
@@ -11,6 +12,7 @@ export const local = {
 }
 
 export const prod = {
+	"domain": "http://test/bizmentor.cn",
 	"baseUrl": 'https://console.bizmentor.cn/app-api',
 	"tenantId": '123',
 	"wxAppId": 'wx9ff5dd29f461c008',

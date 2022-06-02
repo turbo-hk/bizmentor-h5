@@ -54,24 +54,24 @@
 					<u-col span="6">{{data.operationMode.label}}</u-col>
 				</u-row>
 				<u-row v-if="data.skilled && data.skilled.label">
-					<u-col span="6" 行业经验和技能要求：</u-col>
-						<u-col span="6" {{data.skilled.label}}</u-col>
+					<u-col span="6"> 行业经验和技能要求：</u-col>
+						<u-col span="6"> {{data.skilled.label}}</u-col>
 				</u-row>
 				<u-row v-if="data.caseType && data.caseType.label">
-					<u-col span="6" 案例类型：</u-col>
-						<u-col span="6" {{data.caseType.label}}</u-col>
+					<u-col span="6"> 案例类型：</u-col>
+						<u-col span="6"> {{data.caseType.label}}</u-col>
 				</u-row>
 				<u-row v-if="data.caseYear">
-					<u-col span="6" 案例发生时间：</u-col>
-						<u-col span="6" {{data.caseYear}} 年</u-col>
+					<u-col span="6"> 案例发生时间：</u-col>
+						<u-col span="6"> {{data.caseYear}} 年</u-col>
 				</u-row>
 				<u-row :gutter="gutter" :width="nvueWidth" v-if="data.courseType && data.courseType.label">
-					<u-col span="6" 干货类型：</u-col>
-						<u-col span="6" {{data.courseType.label}}</u-col>
+					<u-col span="6"> 干货类型：</u-col>
+						<u-col span="6"> {{data.courseType.label}}</u-col>
 				</u-row>
 				<u-row :gutter="gutter" :width="nvueWidth" v-if="data.technical && data.technical.label">
-					<u-col span="6" 技能储备要求：</u-col>
-						<u-col span="6" {{data.technical.label}}</u-col>
+					<u-col span="6"> 技能储备要求：</u-col>
+						<u-col span="6"> {{data.technical.label}}</u-col>
 				</u-row>
 			</view>
 
@@ -100,7 +100,8 @@
 				<!-- 分享区域-->
 				<view class="pay-message" v-if="data.makePublic === 0">
 					<view class="uni-flex uni-column share-area" @click="fx">
-						<view class="flex-item flex-item-V" style="margin-top: 20rpx;"><text class="pay-message-text">你也可以通过分享赚钱！</text></view>
+						<view class="flex-item flex-item-V" style="margin-top: 20rpx;"><text
+								class="pay-message-text">你也可以通过分享赚钱！</text></view>
 
 						<view class="flex-item flex-item-V">
 							<text class="pay-message-text">立即去分享</text>
@@ -144,7 +145,6 @@
 		</view>
 	</view>
 </template>
-
 <script>
 	import {
 		contentDetail,
@@ -159,6 +159,7 @@
 		isLogin,
 		getUser
 	} from "@/common/js/util.js";
+	var jWeixin = require('../../node_modules/jweixin-module/lib/index.js');
 	export default {
 		data() {
 			return {
@@ -203,12 +204,12 @@
 						"<br> <br> <span style='color:red;'>先行付费阅读文章，将获得更多流量</span>。<br /> <br />" +
 						"<span style='color:#999;'>(转阅赚钱规则平台可根据实际情况适时调整)</span>"
 				},
-				fenxiang:{
+				fenxiang: {
 					show: false,
 					title: "两种赚钱方式",
-					content: "<div style='text-align:center;'><span> 1、转发好文赚钱；</span><br> "+
-					"<span> 2、写文章赚钱。</span><br>"+
-					+"</div>"
+					content: "<div style='text-align:center;'><span> 1、转发好文赚钱；</span><br> " +
+						"<span> 2、写文章赚钱。</span><br>" +
+						+"</div>"
 				},
 			}
 		},
@@ -217,13 +218,13 @@
 			if (event.id) {
 				this.id = event.id
 			}
-			this.id = 50;
-			if (event.title) {
-				this.title = event.title
-				uni.setNavigationBarTitle({
-					title: event.title
-				})
-			}
+			//this.id = 50;
+			// if (event.title) {
+			// 	this.title = event.title
+			// 	uni.setNavigationBarTitle({
+			// 		title: event.title
+			// 	})
+			// }
 			if (event.shared) {
 				this.sharedUserId = event.shared;
 			}
@@ -246,7 +247,7 @@
 					if (that.data.dz > 0) {
 						that.footerIconStyle.dz.activite = that.footerIconStyle.dz.checked;
 					}
-					//that.initWx();
+					that.initWx();
 				});
 			},
 			pay() {
@@ -317,7 +318,7 @@
 				});
 				jWeixin.ready(function() {
 					// config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-					console.log('微信支付验证通过')
+					//console.log('微信支付验证通过')
 					_this.wxAppShareCore();
 				});
 				jWeixin.error(function(res) {
@@ -416,7 +417,7 @@
 			zf() {
 				this.zhuanfa.show = !this.zhuanfa.show;
 			},
-			fx(){
+			fx() {
 				this.fenxiang.show = !this.fenxiang.show;
 			},
 		}
@@ -464,6 +465,7 @@
 		font-size: 32rpx;
 		color: $u-content-color;
 		line-height: 2.1;
+		margin-bottom: 80rpx;
 	}
 
 	.hide-preCode-box {

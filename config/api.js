@@ -5,7 +5,9 @@ import {
 	addURLParam
 } from "@/common/js/util.js";
 
-import {getEnv} from "@/config/env.js"
+import {
+	getEnv
+} from "@/config/env.js"
 
 /**
  * 文章列表
@@ -65,7 +67,9 @@ export const wxAuthRedirect = (params, config = {}) => {
 	let env = getEnv();
 	params["type"] = env.wxLoginType;
 	params["tenant-id"] = env.tenantId;
-	return http.get('/member/auth/social-auth-redirect', {"params": params}, config);
+	return http.get('/member/auth/social-auth-redirect', {
+		"params": params
+	}, config);
 };
 
 
@@ -75,7 +79,11 @@ export const wxAuthRedirect = (params, config = {}) => {
  * @param {*} params 
  * @param {*} config 
  */
-export const wxJsApiSign = (params, config = {}) => http.post('/member/wx-mp/create-jsapi-signature', params, config);
+export const wxJsApiSign = (params, config = {
+	"header": {
+		'Content-Type': "application/x-www-form-urlencoded;charset=utf-8;"
+	}
+}) => http.post('/member/wx-mp/create-jsapi-signature', params, config);
 
 /**
  * 微信绑定手机号码登录
@@ -92,3 +100,28 @@ export const wxLogin = (params, config = {}) => http.post('/member/auth/social-b
  * @param {*} config 
  */
 export const pwdLogin = (params, config = {}) => http.post('/member/auth/login', params, config);
+
+/**
+ * 获取用户信息
+ * 
+ * @param {*} params 
+ * @param {*} config 
+ */
+export const getMemberUser = (params, config = {}) => http.get('/member/user/get', params, config);
+
+/**
+ * 获取账户信息
+ * 
+ * @param {*} params 
+ * @param {*} config 
+ */
+export const getAccount = (params, config = {}) => http.get('/user/member/account/balance', params, config);
+
+/**
+ * 退出登录
+ * 
+ * @param {*} params 
+ * @param {*} config 
+ */
+export const logout = (params, config = {}) => http.post('/member/auth/logout', params, config);
+

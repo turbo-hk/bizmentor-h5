@@ -17,13 +17,14 @@
 			<u-list-item v-for="(item, index) in dataList" :key="index">
 				<view class="album" @click="toDetail(item)">
 					<view class="album__avatar">
-						<image :src="item.thumbnailImage" mode="" style="width: 92px;height: 101px;"></image>
+						<image :src="item.thumbnailImage" mode="" border='0' style="width: 92px;height: 101px;"></image>
 					</view>
 					<view class="album__content">
-						<u--text :text="item.title" type="primary"></u--text>
+						<u--text :text="item.title" :bold="true"></u--text>
 						<view class="title-content">频道：{{item.channel.label}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{formatDate(item.bizTime)}}</view>
 					</view>
 				</view>
+				<u-gap height="10" bgColor="#f3f4f6" customStyle="margin-top: 6rpx;margin-bottom:6rpx;"></u-gap>
 			</u-list-item>
 		</u-list>
 		<u-loadmore :status="statusLoadMore" />
@@ -128,7 +129,7 @@
 				this.loadmore(1);
 			},
 			toDetail(item) {
-				navigateTo("/pages/news/detail?id=" + item.id + "&title=" + item.title,)
+				navigateTo("/pages/news/detail?id=" + item.id)
 			},
 		}
 	}
@@ -145,6 +146,7 @@
 		margin-top: 15rpx;
 		padding: 0 30rpx;
 	}
+	
 	.head-icon{
 		margin-top: 10rpx;
 		margin-bottom: 30rpx;
@@ -162,12 +164,12 @@
 
 		&__avatar {
 			background-color: $u-bg-color;
-			padding: 5px;
+			padding: 2rpx;
 			border-radius: 3px;
 		}
 
 		&__content {
-			margin-left: 10px;
+			margin-left: 10rpx;
 			flex: 1;
 		}
 	}
