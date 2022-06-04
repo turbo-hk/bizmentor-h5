@@ -19,6 +19,9 @@
 			"path": "pages/home/login/pwd-login/pwd-login"
 		},
 		{
+			"path": "pages/home/settings/index"
+		},
+		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "uni-app"

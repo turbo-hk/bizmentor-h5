@@ -96,23 +96,12 @@
 						},
 					],
 					[{
-						"title": '退出登录',
-						"to": undefined,
-						'event': 'eventLogout',
-						"icon": "account"
-					}, {
 						"title": '设置',
-						"to": '',
-						'event': 'toSettings',
+						"to": '/pages/home/settings/index',
+						'event': undefined,
 						"icon": "setting",
 						"link": true
-					}, ],
-					[{
-						"title": '关于',
-						"to": '',
-						"icon": "info-circle",
-						"link": true
-					}],
+					}, ]
 				],
 				logoutModal: {
 					show: false,
@@ -145,19 +134,10 @@
 			 */
 			ucenterListClick(item) {
 				if (item.to) {
-					navigateTo()(item.to);
+					navigateTo(item.to);
 				} else if (!item.to && item.event) {
 					this[item.event]();
 				}
-			},
-			eventLogout(confirm) {
-				this.logoutModal.show = !this.logoutModal.show;
-			},
-			confirmLogout(){
-				logout().then(res => {
-					uni.clearStorageSync();
-					toIndex();
-				})
 			},
 		}
 	}
