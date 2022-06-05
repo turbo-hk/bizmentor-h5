@@ -43,7 +43,7 @@
 						},
 						{
 							"title": '帮助与反馈',
-							"to": '',
+							"to": '/pages/home/settings/feedback',
 							"icon": "info-circle",
 							"link": true
 						}

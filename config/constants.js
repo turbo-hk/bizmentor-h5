@@ -5,7 +5,7 @@ export const ENV_PROD = 'prod';
 /**
  * 当前激活的环境配置
  */
-//export const ENV_ACTIVE = 'local';
-export const ENV_ACTIVE = 'prod';
+//export const ENV_ACTIVE = ENV_LOCAL;
+export const ENV_ACTIVE = ENV_PROD;
 
 

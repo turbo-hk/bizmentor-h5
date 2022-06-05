@@ -4,7 +4,9 @@ import qs from 'qs';
 import {
 	addURLParam
 } from "@/common/js/util.js";
-
+import {
+	ENV_ACTIVE
+} from "@/config/constants.js";
 import {
 	getEnv
 } from "@/config/env.js"
@@ -91,7 +93,11 @@ export const wxJsApiSign = (params, config = {
  * @param {*} params 
  * @param {*} config 
  */
-export const wxLogin = (params, config = {}) => http.post('/member/auth/social-bind-login/no-sms-code', params, config);
+export const wxLogin = (params, config = {}) => {
+	let env = getEnv();
+	params["type"] = env.wxLoginType;
+	return http.post('/member/auth/social-bind-login/no-sms-code', params, config);
+};
 
 /**
  * 密码登录
@@ -125,3 +131,71 @@ export const getAccount = (params, config = {}) => http.get('/user/member/accoun
  */
 export const logout = (params, config = {}) => http.post('/member/auth/logout', params, config);
 
+/**
+ * 查询所有字典
+ * 
+ * @param {*} params 
+ * @param {*} config 
+ */
+export const getAllDict = (params, config = {}) => http.get('/app/system/dict-data/list-all-simple', params, config);
+
+/**
+ *  获取一个类型的字典
+ * 
+ * @param {*} params 
+ * @param {*} config 
+ */
+export const getDict = (params, config = {}) => {
+	params['pageNo'] = 1;
+	params['pageSize'] = 100;
+	return http.get('/app/system/dict-data/page', {
+		"params": params
+	}, config)
+};
+
+/**
+ * 创建文章
+ * 
+ * @param {*} params 
+ * @param {*} config 
+ */
+export const createContent = (params, config = {}) => http.post('/content/create', params, config);
+
+/**
+ * 编辑文章
+ * 
+ * @param {*} params 
+ * @param {*} config 
+ */
+export const updateContent = (params, config = {}) => http.post('/content/update', params, config);
+
+/**
+ * 反馈内容
+ * 
+ * @param {*} params 
+ * @param {*} config 
+ */
+export const createFeedback = (params, config = {}) => http.post('/app/business/feedback/create', params, config);
+
+/**
+ * 上传文件
+ * 
+ * @param {*} filePath 
+ */
+export const uploadImg = (filePath) => {
+	let env = getEnv(ENV_ACTIVE);
+	return new Promise((resolve, reject) => {
+		uni.uploadFile({
+			url: env.baseUrl + '/infra/file/upload',
+			filePath: filePath,
+			header: {
+				"tenant-id": env.tenantId
+			},
+			name: 'file',
+			formData: {},
+			success: (res) => {
+				resolve(res.data);
+			}
+		});
+	});
+}

@@ -5,7 +5,7 @@ import {
 
 export const local = {
 	"domain": "http://test/bizmentor.cn",
-	"baseUrl": 'http://192.168.31.33:48080/app-api',
+	"baseUrl": 'http://192.168.31.242:48080/app-api',
 	"tenantId": '123',
 	"wxAppId": 'wx9ff5dd29f461c008',
 	"wxLoginType": 31

@@ -13,7 +13,7 @@
 		</u-grid>
 
 		<!-- 列表数据 -->
-		<u-list @scrolltolower="scrolltolower">
+		<u-list @scrolltolower="scrolltolower" :pagingEnabled="true" :lowerThreshold="0">
 			<u-list-item v-for="(item, index) in dataList" :key="index">
 				<view class="album" @click="toDetail(item)">
 					<view class="album__avatar">
@@ -60,7 +60,7 @@
 					"value": "business_course",
 				}],
 				searchParam: {
-					pageSize: 6,
+					pageSize: 10,
 					pageNo: 1,
 					keyword: undefined,
 					channel: undefined
@@ -87,17 +87,21 @@
 			},
 			loadmore(pageNo, opt) {
 				console.log(pageNo)
+				if(this.statusLoadMore === 'loading'){
+					console.log("加载太快...")
+					return;
+				}
+				this.statusLoadMore = "loading";
 				this.searchParam.pageNo = pageNo;
 				const _this = this;
 				contentList(this.searchParam).then(res => {
 					_this.totalLength = res.total;
-					
-					_this.dataList = _this.dataList.concat(res.list);
+					_this.dataList.push(...res.list)
 					_this.currentPage = pageNo;
 					if (_this.dataList.length === _this.totalLength) {
 						_this.statusLoadMore = 'nomore';
 					} else {
-						_this.statusLoadMore = "loading";
+						_this.statusLoadMore = "loadmore";
 					}
 				}).catch(err => {
 

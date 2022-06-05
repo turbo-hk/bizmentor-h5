@@ -208,7 +208,7 @@
 					show: false,
 					title: "两种赚钱方式",
 					content: "<div style='text-align:center;'><span> 1、转发好文赚钱；</span><br> " +
-						"<span> 2、写文章赚钱。</span><br>" +
+						"<span> 2、写文章赚钱。</span><br>" 
 						+"</div>"
 				},
 			}

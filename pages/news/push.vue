@@ -94,21 +94,28 @@
 				<u-number-box v-model="formField.payBackMax" :step="0.01" :min="0" :max="999999999" :decimalLength="2"
 					:inputWidth="150"></u-number-box>
 			</u-form-item>
-			<u-form-item label="单次浏览收益(元)" prop="readIncome" borderBottom ref="item1">
+			<u-form-item label="单次浏览收益(元)" prop="readIncome" ref="item1">
 				<u-number-box v-model="formField.readIncome" :step="0.01" :min="0" :max="999999999" :decimalLength="2"
 					:inputWidth="150"></u-number-box>
 			</u-form-item>
-			<u-form-item label="文章免费阅读比例(%)" prop="showPercent" borderBottom v-show="formField.readIncome > 0"
-				ref="item1">
+			<u-form-item label="文章免费阅读比例(%)" prop="showPercent" v-show="formField.readIncome > 0" ref="item1">
 				<u-slider v-model="formField.showPercent" :step="0.01" min="0" max="100" :showValue="true"
 					customStyle="width:100%"></u-slider>
 			</u-form-item>
-			<u-form-item label="摘要" prop="abstractContent" ref="item1">
-				<editor1 @getContents="getAbstractContent" class="bg" style="height: 15vh;"></editor1>
-			</u-form-item>
-			<u-form-item label="正文" prop="content" ref="item1">
-				<editor1 @getContents="getContent" class="bg" style="height: 30vh;"></editor1>
-			</u-form-item>
+
+			<u-collapse>
+				<u-collapse-item title="摘要" name="Docs guide">
+					<u-form-item label="" prop="abstractContent" ref="item1">
+						<editor1 @getContents="getAbstractContent" class="bg"></editor1>
+					</u-form-item>
+				</u-collapse-item>
+				<u-collapse-item title="正文" name="Docs guide">
+					<u-form-item label="" prop="content" ref="item1">
+						<editor1 @getContents="getContent" class="bg"></editor1>
+					</u-form-item>
+				</u-collapse-item>
+			</u-collapse>
+
 			<u-form-item label="状态" prop="status" borderBottom ref="item1">
 				<u-radio-group v-model="formField.statusField" placement="row">
 					<u-radio :customStyle="{marginLeft: '18px'}" v-for="(item, index) in formInitData.status.data"
@@ -124,12 +131,12 @@
 				<u-number-box v-model="formField.readCount" :step="1" :min="0" :max="999999999" :decimalLength="0"
 					:inputWidth="150"></u-number-box>
 			</u-form-item>
-			<u-form-item label="作者" prop="author" ref="item1">
+			<u-form-item label="作者" prop="author" borderBottom ref="item1">
 				<u--input v-model="formField.author" border="none" placeholder="请输入作者"></u--input>
 			</u-form-item>
 
 		</u--form>
-		<u-button @click="submit">提交</u-button>
+		<u-button @click="submit" type="primary" customStyle="marginTop:100rpx" :throttleTime="3000">提交</u-button>
 
 		<!-- 底部导航栏 -->
 		<app-footer :index="1"></app-footer>
@@ -285,10 +292,28 @@
 						message: '请选择行业分类',
 						trigger: ['blur', 'change']
 					},
+					'abstractContent': {
+						type: 'string',
+						required: true,
+						message: '摘要：不能为空',
+						trigger: ['blur', 'change']
+					},
+					'content': {
+						type: 'string',
+						required: true,
+						message: '正文：不能为空',
+						trigger: ['blur', 'change']
+					},
 					'status': {
 						type: 'string',
 						required: true,
 						message: '"状态：不能为空',
+						trigger: ['blur', 'change']
+					},
+					'author': {
+						type: 'string',
+						required: true,
+						message: '"作者：不能为空',
 						trigger: ['blur', 'change']
 					},
 				},

@@ -42,6 +42,10 @@ module.exports = (vm) => {
 		console.log(response.statusCode)
 		// 自定义参数
 		// const custom = response.config?.custom
+		if(data.code === 401){
+			toLogin();
+			return;
+		}
 		if (data.code != 0) {
 			// 如果没有显式定义custom的toast参数为false的话，默认对报错进行toast弹出提示
 			if (data.msg) {
