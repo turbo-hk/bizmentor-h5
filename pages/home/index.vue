@@ -13,21 +13,21 @@
 		<!-- 宫格区域-->
 		<u-grid :border="false">
 			<u-grid-item v-for="(item,index) in gridList" :key="index">
-				<u--text :text="item.title" align="center" :bold="true"></u--text>
+				<u--text :text="item.title" align="center" :bold="true" type="info"></u--text>
 				<u-count-to :endVal="item.text" separator="," :decimals="2"></u-count-to>
 			</u-grid-item>
 		</u-grid>
 		<u-grid :border="false">
 			<u-grid-item v-for="(item,index) in gridList" :key="index">
 				<u-button v-show="item.btn.show" customStyle="width: 60rpx;" :text="item.btn.text" type="primary"
-					size="mini"></u-button>
+					size="mini" @click="tx"></u-button>
 			</u-grid-item>
 		</u-grid>
 		<!-- 单元格区域 -->
 		<view class="center-list">
 			<u-cell-group v-for="(sublist , index) in ucenterList" :key="index" :border="false">
 				<u-cell v-for="(item,i) in sublist" :title="item.title" @click="ucenterListClick(item)"
-					:icon="item.icon" :border="false" :isLink="item.link" arrow-direction="right"></u-cell>
+					:icon="item.icon" :border="false" :isLink="item.link" arrow-direction="right" :value="item.value"></u-cell>
 				<u-gap v-show="index!=ucenterList.length-1" height="6" bgColor="#f3f4f6"></u-gap>
 			</u-cell-group>
 		</view>
@@ -50,7 +50,8 @@
 		getUser,
 		isLogin,
 		navigateTo,
-		toIndex
+		toIndex,
+		msg
 	} from "../../common/js/util.js";
 	export default {
 		data() {
@@ -72,7 +73,7 @@
 					"text": "0.00",
 					"btn": {
 						show: true,
-						text: "提现"
+						text: "提现",
 					}
 				}, ],
 				ucenterList: [
@@ -80,19 +81,22 @@
 							"title": '我的创作',
 							"to": '/pages/home/settings/settings',
 							"icon": "order",
-							"link": true
+							"link": true,
+							"value":"敬请期待"
 						},
 						{
 							"title": '我的收藏',
 							"to": '/pages/home/settings/settings',
 							"icon": "star",
-							"link": true
+							"link": true,
+							"value":"敬请期待"
 						},
 						{
 							"title": '我的点赞',
 							"to": '/pages/home/settings/settings',
 							"icon": "thumb-up",
-							"link": true
+							"link": true,
+							"value":"敬请期待"
 						},
 					],
 					[{
@@ -138,6 +142,9 @@
 				} else if (!item.to && item.event) {
 					this[item.event]();
 				}
+			},
+			tx(){
+				msg("敬请期待");
 			},
 		}
 	}

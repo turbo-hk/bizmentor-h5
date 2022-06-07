@@ -5,7 +5,7 @@
 			<u-cell-group v-for="(sublist , index) in ucenterList" :key="index" :border="false">
 				<u-cell v-for="(item,i) in sublist" :title="item.title" @click="ucenterListClick(item)"
 					:icon="item.icon" :border="false" :isLink="item.link" arrow-direction="right"
-					:customStyle="item.customStyle"></u-cell>
+					:customStyle="item.customStyle" :value="item.value"></u-cell>
 				<u-gap v-show="index!=ucenterList.length-1" height="6" bgColor="#f3f4f6"></u-gap>
 			</u-cell-group>
 		</view>
@@ -39,7 +39,8 @@
 							"title": '关于创业好帮手',
 							"to": '',
 							"icon": "info-circle",
-							"link": true
+							"link": true,
+							"value":"敬请期待"
 						},
 						{
 							"title": '帮助与反馈',

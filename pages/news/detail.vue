@@ -122,7 +122,7 @@
 			<view @click.stop="dz">
 				<u--text prefixIcon="thumb-up" :iconStyle="footerIconStyle.dz.activite" text="点赞"></u--text>
 			</view>
-			<view @click.stop="footerClick('3')">
+			<view @click.stop="pl">
 				<u--text prefixIcon="chat" :iconStyle="footerIconStyle.pl.activite" text="评论"></u--text>
 			</view>
 		</view>
@@ -157,7 +157,8 @@
 	} from "../../config/api.js";
 	import {
 		isLogin,
-		getUser
+		getUser,
+		msg
 	} from "@/common/js/util.js";
 	var jWeixin = require('../../node_modules/jweixin-module/lib/index.js');
 	export default {
@@ -295,7 +296,6 @@
 					}
 				});
 			},
-			footerClick(types) {},
 			initWx() {
 				const that = this;
 				let pageUrl = location.href;
@@ -419,6 +419,9 @@
 			},
 			fx() {
 				this.fenxiang.show = !this.fenxiang.show;
+			},
+			pl(){
+				msg("敬请期待");
 			},
 		}
 	}

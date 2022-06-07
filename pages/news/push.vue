@@ -83,16 +83,16 @@
 			<u-form-item label="启动资金(元)" prop="startAmount" borderBottom
 				v-show="formField.channel == dictType.channelProject" ref="item1">
 				<u-number-box v-model="formField.startAmountMin" :step="0.01" :min="0" :max="999999999"
-					:decimalLength="2" :inputWidth="150"></u-number-box> 至
-				<u-number-box v-model="formField.startAmountMax" :step="0.01" :min="0" :max="999999999"
-					:decimalLength="2" :inputWidth="150"></u-number-box>
+					:decimalLength="2" :inputWidth="65"></u-number-box> 至
+				<u-number-box v-model="formField.startAmountMax" :step="0.01" :min="formField.startAmountMin" :max="999999999"
+					:decimalLength="2" :inputWidth="65"></u-number-box>
 			</u-form-item>
 			<u-form-item label="投资回报周期(月)" prop="payBack" borderBottom
 				v-show="formField.channel == dictType.channelProject" ref="item1">
-				<u-number-box v-model="formField.payBackMin" :step="0.01" :min="0" :max="999999999" :decimalLength="2"
-					:inputWidth="150"></u-number-box> 至
-				<u-number-box v-model="formField.payBackMax" :step="0.01" :min="0" :max="999999999" :decimalLength="2"
-					:inputWidth="150"></u-number-box>
+				<u-number-box v-model="formField.payBackMin" :step="1" :min="0" :max="999999999" :decimalLength="0"
+					:inputWidth="65"></u-number-box> 至
+				<u-number-box v-model="formField.payBackMax" :step="1" :min="formField.payBackMin" :max="999999999" :decimalLength="0"
+					:inputWidth="65"></u-number-box>
 			</u-form-item>
 			<u-form-item label="单次浏览收益(元)" prop="readIncome" ref="item1">
 				<u-number-box v-model="formField.readIncome" :step="0.01" :min="0" :max="999999999" :decimalLength="2"
@@ -106,12 +106,12 @@
 			<u-collapse>
 				<u-collapse-item title="摘要" name="Docs guide">
 					<u-form-item label="" prop="abstractContent" ref="item1">
-						<editor1 @getContents="getAbstractContent" class="bg"></editor1>
+						<editor1 :uid="editor1" @getContents="getAbstractContent" class="bg"></editor1>
 					</u-form-item>
 				</u-collapse-item>
 				<u-collapse-item title="正文" name="Docs guide">
 					<u-form-item label="" prop="content" ref="item1">
-						<editor1 @getContents="getContent" class="bg"></editor1>
+						<editor1 :uid="editor2" @getContents="getContent" class="bg"></editor1>
 					</u-form-item>
 				</u-collapse-item>
 			</u-collapse>
@@ -145,7 +145,7 @@
 
 <script>
 	import Footer from '@/pages/common/footer-tabbar.vue';
-	import editor1 from '../../components/editor/editor.vue'
+	import editor1 from '../../components/editor/editor.vue';
 	import {
 		uploadImg,
 		getDict,
@@ -157,6 +157,8 @@
 	export default {
 		data() {
 			return {
+				editor1:"editor1",
+				editor2:"editor2",
 				dictType: {
 					channelCase: "business_case",
 					channelCourse: "business_course",
@@ -184,11 +186,11 @@
 					operationMode: undefined,
 					operationModeField: undefined,
 					region: undefined,
-					startAmountMin: undefined,
-					startAmountMax: undefined,
-					payBackMin: undefined,
-					payBackMax: undefined,
-					readIncome: undefined,
+					startAmountMin: 0,
+					startAmountMax: 0,
+					payBackMin: 0,
+					payBackMax: 0,
+					readIncome: 0,
 					showPercent: 10,
 					abstractContent: undefined,
 					content: undefined,
@@ -321,7 +323,7 @@
 		},
 		components: {
 			'app-footer': Footer,
-			editor1,
+			'editor1': editor1,
 		},
 		onLoad() {
 			getDict({

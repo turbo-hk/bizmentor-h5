@@ -64,8 +64,9 @@
 				</view>
 
 				<view class="editor-wrapper">
-					<editor id="editor" class="ql-container" placeholder="开始输入..." showImgSize showImgToolbar
-						showImgResize @statuschange="onStatusChange" :read-only="readOnly" @ready="onEditorReady">
+					<editor :id="uid" class="ql-container" placeholder="开始输入..." showImgSize showImgToolbar
+						showImgResize @statuschange="onStatusChange" :read-only="readOnly" @ready="onEditorReady"
+						@input="getText">
 					</editor>
 				</view>
 			</view>
@@ -80,6 +81,11 @@
 		uploadImg,
 	} from "@/config/api.js";
 	export default {
+		props: {
+			"uid": {
+				type: String
+			},
+		},
 		data() {
 			return {
 				readOnly: false,
@@ -91,7 +97,7 @@
 				this.readOnly = !this.readOnly
 			},
 			onEditorReady() {
-				uni.createSelectorQuery().select('#editor').context((res) => {
+				uni.createSelectorQuery().select('#' + this.uid).context((res) => {
 					this.editorCtx = res.context
 				}).exec()
 			},
@@ -144,11 +150,11 @@
 					count: 1,
 					success: (res) => {
 						this.showToast({
-						type: 'loading',
-						title: '上传文件',
-						message: "上传中",
-						iconUrl: 'https://cdn.uviewui.com/uview/demo/toast/loading.png'
-					})
+							type: 'loading',
+							title: '上传文件',
+							message: "上传中",
+							iconUrl: 'https://cdn.uviewui.com/uview/demo/toast/loading.png'
+						})
 						uploadImg(res.tempFilePaths[0]).then(res2 => {
 							console.log(res2)
 							let url = JSON.parse(res2).data;
@@ -163,13 +169,15 @@
 					}
 				})
 			},
+			getText(e) {
+				this.$emit("getContents", e.detail.html);
+			},
 			showToast(params) {
 				this.$refs.uToast.show({
 					...params,
-					complete() {
-					}
+					complete() {}
 				})
-			}
+			},
 		},
 		onLoad() {
 			uni.loadFontFace({
