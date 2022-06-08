@@ -13,7 +13,7 @@
 		</u-grid>
 
 		<!-- 列表数据 -->
-		<u-list @scrolltolower="scrolltolower" :pagingEnabled="true" :lowerThreshold="0">
+		<u-list @scrolltolower="scrolltolower">
 			<u-list-item v-for="(item, index) in dataList" :key="index">
 				<view class="album" @click="toDetail(item)">
 					<view class="album__avatar">
@@ -21,7 +21,8 @@
 					</view>
 					<view class="album__content">
 						<u--text :text="item.title" :bold="true"></u--text>
-						<view class="title-content">频道：{{item.channel.label}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{formatDate(item.bizTime)}}</view>
+						<view class="title-content">频道：{{item.channel.label}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							{{formatDate(item.bizTime)}}</view>
 					</view>
 				</view>
 				<u-gap height="10" bgColor="#f3f4f6" customStyle="margin-top: 6rpx;margin-bottom:6rpx;"></u-gap>
@@ -74,20 +75,20 @@
 		components: {
 			'app-footer': Footer,
 		},
-		onLoad() {
+		onLoad(event) {
+			if (event.channel) {
+				this.searchParam.channel = event.channel;
+			}
 			this.loadmore(1)
-		},
-		onReachBottom() {
-			console.log("上拉加载更多...", this.currentPage);
-			this.loadmore(this.currentPage + 1);
 		},
 		methods: {
 			scrolltolower() {
+				console.log("滚动加载更多...", this.currentPage);
 				this.loadmore(this.currentPage + 1)
 			},
 			loadmore(pageNo, opt) {
 				console.log(pageNo)
-				if(this.statusLoadMore === 'loading'){
+				if (this.statusLoadMore === 'loading') {
 					console.log("加载太快...")
 					return;
 				}
@@ -145,23 +146,23 @@
 		box-sizing: border-box;
 		flex-direction: column;
 	}
-	
+
 	.u-page {
 		margin-top: 15rpx;
 		padding: 0 30rpx;
 	}
-	
-	.head-icon{
+
+	.head-icon {
 		margin-top: 10rpx;
 		margin-bottom: 30rpx;
 	}
-	
+
 	/* 描述 额外文本 */
 	.title-content {
 		color: #999;
 		font-size: 14px;
 	}
-	
+
 	.album {
 		@include flex;
 		align-items: flex-start;
